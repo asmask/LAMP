@@ -1,0 +1,69 @@
+Partie 1 : Application LAMP All-in-One 
+	Mettre en place une infrastructure LAMP
+		▪ Créez une VM ubuntu server 18.04
+		▪ installez le serveur web Apache
+			>> sudo apt install apache2
+
+		▪ installez le module PHP
+			>> sudo apt install libapache2-mod-php
+
+		▪ installez le SGBD MySQL
+			>>sudo apt install mysql-server
+		▪ Créez une BD relative à votre projet
+			>> sudo mysql
+				mysql>> create database my_db;
+
+		• Création d’un utilisateur ayant tous les droits sur cette BD
+				mysql>> create user asma identified by 'asma';
+				mysql>>	grant all on my_db.* to asma@'%';
+
+		• Votre application se connectera à la BD avec les paramètres de cet utilisateur
+		• Créez une table très simple et remplissez la par quelles que lignes
+				mysql>> use my_db;
+ 				mysql>>CREATE TABLE employees (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,name VARCHAR(100) NOT NULL,address VARCHAR(255) NOT NULL, salary INT(10) NOT NULL);
+		
+		• Testez l’accès à la base et l’affichage du contenu de la table en utilisant le client MySQL
+				>> mysql -u asma -p 
+					enter password: asma
+				mysql>> use my_db;
+				mysql>> select * from employees;
+		▪ Créez et hébergez quelles que pages PHP manipulant votre BD
+
+Partie 2 : Application LAMP 2-tiers
+	• Mettre en place une infrastructure LAMP 2-tiers
+	▪ Même travail que Partie 1 avec :
+	• une VM pour Apache et PHP
+		▪ installez le serveur web Apache
+			>> sudo apt install apache2
+
+		▪ installez le module PHP
+			>> sudo apt install libapache2-mod-php
+
+		▪ installez mysql client
+			>> sudo apt install mysql-client
+		
+		▪ connecter sur le serveur sql
+			>> mysql -u asma -p -D my_db -h 192.168.56.101 -P 3306 
+
+		
+	• une VM pour MySQL
+		▪ installez le SGBD MySQL
+			>>sudo apt install mysql-server
+			.
+			. (même travail que la partie 1 (creation utilisateur,base de données et les tables))
+			>>sudo nano /etc§mysql/mysql.conf.d/mysqld.cnf
+				changer bind address:
+					bind-address = 0.0.0.0 
+	
+
+Partie 4 : DevOps → Automatisation ...
+	• MySQL ?
+		▪ Quelle est l’option de la commande mysql qui permet d’exécuter un script SQL ?
+			>mysql db_name < script_file.sql
+		▪ Quelles sont les commandes de sauvegarde et de restauration d’une BD ?
+			▪ sauvgarde d'une seule bd:
+				>mysqldump --user=nom_user --password=pwd --database nom_de_base > fichier_destination.sql
+			▪ sauvgarde de tous les bd:
+				>mysqldump --user=nom_user --password=pwd --all-databases > fichier_destination.sql
+
+		
